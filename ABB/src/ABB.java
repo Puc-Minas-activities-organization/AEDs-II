@@ -283,4 +283,32 @@ public class ABB<K, V> implements IMapeamento<K, V> {
 	public int tamanho() {
 		return tamanho;
 	}
+
+    public String caminhamentoPreOrdem(){
+        if(vazia()) throw new IllegalStateException("A árvore está vazia");
+        return caminhamentoPreOrdem(raiz);
+    }
+
+    private String caminhamentoPreOrdem(No<K, V> raizArvore){
+        if(raizArvore != null){
+            String resposta = raizArvore.getItem().toString() + "\n";
+            resposta += caminhamentoPreOrdem(raizArvore.getEsquerda());
+            return resposta += caminhamentoPreOrdem(raizArvore.getDireita());
+        }
+        else return "";
+    }
+
+    public String caminhamentoPosOrdem(){
+        if(vazia()) throw new IllegalStateException("Árvore está vazia");
+        return caminhamentoPosOrdem(raiz);
+    }
+
+    private String caminhamentoPosOrdem(No<K, V> raizArvore){
+        if(raizArvore != null){
+            String resposta = caminhamentoPosOrdem(raizArvore.getEsquerda());
+            resposta += caminhamentoPosOrdem(raizArvore.getDireita());
+            return resposta += raizArvore.getItem().toString() + "\n";
+        }
+        else return "";
+    }
 }
