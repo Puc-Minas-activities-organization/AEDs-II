@@ -77,4 +77,8 @@ public class No<K, V> {
 		
 		return (alturaEsquerda - alturaDireita);
 	}	
+
+	public No<K, V> clone(){
+		return new No<K, V>(this.chave, this.item);
+	}
 }
