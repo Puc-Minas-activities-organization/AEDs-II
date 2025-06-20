@@ -431,7 +431,6 @@ public class ABB<K, V> implements IMapeamento<K, V> {
         return obterAntecessorRecursivo(chave, this.raiz, null);
     }
 
-    // ...existing code...
     private V obterAntecessorRecursivo(K chave, No<K, V> raizArvore, No<K, V> antecessor) {
 
         int comparacao = comparador.compare(chave, raizArvore.getChave());
@@ -451,6 +450,11 @@ public class ABB<K, V> implements IMapeamento<K, V> {
         } else {
             throw new IllegalArgumentException("Chave não existe");
         }
+    }
+    
+
+    public void obterSubconjuntoMaiores(K chave){
+        
     }
 
     public Double calcularValorMedio(Function<V, Double> extrator) {
