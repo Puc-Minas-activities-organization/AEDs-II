@@ -2,7 +2,7 @@ public class Aplicacao {
 
 	public static void main(String[] args) {
 
-		TabelaHash<String, Aluno> turma = new TabelaHash<>(3);
+		TabelaHashOriginal<String, Aluno> turma = new TabelaHashOriginal<>(3);
 		Aluno alunoNovo;
 		
 		try {
