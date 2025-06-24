@@ -385,16 +385,16 @@ public class ABB<K, V> implements IMapeamento<K, V> {
     }
 
 
-    public boolean obterConjuntoEstrita(){
+    public boolean verificarEstrita(){
         if(vazia()) return false;
-        return obterConjuntoEstrita(raiz);
+        return verificarEstita(raiz);
     }
 
-    private boolean obterConjuntoEstrita(No<K, V> raizArvore) {
+    private boolean verificarEstita(No<K, V> raizArvore) {
         if (raizArvore == null) return true;
 
-        boolean esquerda = obterConjuntoEstrita(raizArvore.getEsquerda());
-        boolean direita = obterConjuntoEstrita(raizArvore.getDireita());
+        boolean esquerda = verificarEstita(raizArvore.getEsquerda());
+        boolean direita = verificarEstita(raizArvore.getDireita());
 
         boolean ehEstrito = (raizArvore.getEsquerda() == null && raizArvore.getDireita() == null)
                 || (raizArvore.getEsquerda() != null && raizArvore.getDireita() != null);
