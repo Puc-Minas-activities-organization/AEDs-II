@@ -1,5 +1,6 @@
 import java.lang.instrument.IllegalClassFormatException;
 import java.nio.channels.IllegalSelectorException;
+import java.rmi.NoSuchObjectException;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
@@ -383,6 +384,25 @@ public class ABB<K, V> implements IMapeamento<K, V> {
             return "";
     }
 
+
+    public boolean obterConjuntoEstrita(){
+        if(vazia()) return false;
+        return obterConjuntoEstrita(raiz);
+    }
+
+    private boolean obterConjuntoEstrita(No<K, V> raizArvore) {
+        if (raizArvore == null) return true;
+
+        boolean esquerda = obterConjuntoEstrita(raizArvore.getEsquerda());
+        boolean direita = obterConjuntoEstrita(raizArvore.getDireita());
+
+        boolean ehEstrito = (raizArvore.getEsquerda() == null && raizArvore.getDireita() == null)
+                || (raizArvore.getEsquerda() != null && raizArvore.getDireita() != null);
+
+        return esquerda && direita && ehEstrito;
+    }
+
+
     public V obterMenor() {
         if (vazia())
             throw new IllegalStateException("Arvore está vazia");
@@ -495,9 +515,31 @@ public class ABB<K, V> implements IMapeamento<K, V> {
     }
     
 
-    public void obterSubconjuntoMaiores(K chave){
-        if(vazia()) throw new IllegalStateException("vazia");
+    public ABB<K,V> obterSubconjuntoMaiores(K chave){
+        try{    
+            pesquisar(chave);
+            ABB<K, V> abb = new ABB<>(comparador);
+            abb.raiz = obterSubconjuntoMaiores(chave, this.raiz);
+            return abb;
+        }catch(Error e){
+            throw new NoSuchElementException("Objeto não encontrado");
+        }
+    }
 
+    private No<K, V> obterSubconjuntoMaiores(K chave, No<K, V> raizArvore){
+        if(raizArvore == null) return null;
+
+        int comparacao = comparador.compare(chave, raizArvore.getChave());
+        if(comparacao <= 0){
+            No<K, V> novoNo = new No<>(raizArvore.getChave(), raizArvore.getItem());
+            if(raizArvore.getDireita()!=null)
+                novoNo.setDireita(raizArvore.getDireita().clone());
+            novoNo.setEsquerda(obterSubconjuntoMaiores(chave, raizArvore.getEsquerda()));
+            return novoNo;
+        }
+        else{
+            return obterSubconjuntoMaiores(chave, raizArvore.getDireita());
+        }
         
     }
 
