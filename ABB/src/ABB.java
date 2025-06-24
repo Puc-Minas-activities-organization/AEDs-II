@@ -398,6 +398,18 @@ public class ABB<K, V> implements IMapeamento<K, V> {
         }
     }
 
+    public V obterMaior(){
+        if(vazia()) throw new IllegalStateException("Árvore não pdoe estar vazia");
+        return obterMaior(raiz);
+    }
+    
+    public V obterMaior(No<K, V> raizArvore){
+        if(raizArvore.getDireita() != null){
+            return obterMaior(raizArvore.getDireita());
+        }
+        return raizArvore.getItem();
+    }
+
     public ABB<K, V> clone() {
         if (vazia())
             throw new IllegalStateException("Árvore está vazia");
@@ -451,9 +463,41 @@ public class ABB<K, V> implements IMapeamento<K, V> {
             throw new IllegalArgumentException("Chave não existe");
         }
     }
+
+    public No<K, V> obterAntecessorM(K chave){
+        if(vazia()) throw new IllegalStateException("Árvore não pode estar vazia");
+        return obterAntecessor(null, this.raiz, chave);
+    }
+
+    private No<K, V> obterAntecessor(No<K, V> antecessor, No<K, V> raizArvore, K chave){
+
+        if(raizArvore == null) return null;
+        int comparacao = comparador.compare(chave, raizArvore.getChave());
+
+        if(comparacao == 0){
+            if(raizArvore.getEsquerda() != null){
+                return encontrarAntecessor(raizArvore.getEsquerda());
+            }
+            else return antecessor;
+        }
+        else if(comparacao > 0){
+            return obterAntecessor(raizArvore, raizArvore.getDireita(), chave);
+        }
+        else{
+            return obterAntecessor(antecessor, raizArvore.getEsquerda(), chave);
+        }
+    }
+
+    private No<K, V> encontrarAntecessor(No<K, V> raizArvore){
+        if(raizArvore.getDireita() != null) 
+            return encontrarAntecessor(raizArvore.getDireita());
+        else return raizArvore;
+    }
     
 
     public void obterSubconjuntoMaiores(K chave){
+        if(vazia()) throw new IllegalStateException("vazia");
+
         
     }
 

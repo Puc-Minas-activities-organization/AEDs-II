@@ -14,11 +14,10 @@ public class TabelaHash<K, V> implements IMapeamento<K, V> {
         for(int i = 0; i < capacidade; i++)
             tabelaHash[i] = new Lista<>();
     }
-
+ 
     private int funcaoHash(K chave){
-        return (((int)chave) % 11);
+        return Math.abs((((int)chave) % 11));
     }
-
 
     @Override
     public int inserir(K chave, V item) {
@@ -33,7 +32,7 @@ public class TabelaHash<K, V> implements IMapeamento<K, V> {
         }
         return pos;
     }
-
+    
     @Override
     public V pesquisar(K chave) {
         // TODO Auto-generated method stub
